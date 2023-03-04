@@ -1,8 +1,11 @@
-require("dotenv").config();
+require("dotenv").config(); // dotenv is a package that helps us to load the environment variables from the .env file to the process.env object. It is useful because we can store the sensitive information like the database url, jwt secret, etc in it. if we invoke here then we don't need to invoke it in every file separately
 require("express-async-errors"); // express async errors is a middleware that handles all the errors thrown by the async functions instead of adding try catch blocks in every async function
 
 const express = require ("express");
 const app = express();
+
+// rest of the packages 
+const morgan = require("morgan"); // morgan is a middleware that logs the requests to the console i.e it logs the method, url, status code, response time in the console for every request made to the server. It is useful because it helps us to identify we are hitting this route so bascially helps us to debug our application
 
 // database 
 const connectDB = require("./db/connect");
@@ -11,6 +14,7 @@ const connectDB = require("./db/connect");
 const notFoundMiddleware = require('./middlewares/not-found');
 const errorHandlerMiddleware = require('./middlewares/error-handler');
 
+app.use(morgan('tiny')) // tiny is the format of the logs that we want to see in the console i.e method, url, status code, response time etc. 
 
 app.use(express.json()) // this is a middleware that parses the incoming request with JSON payloads and is based on body-parser so we don't need to install body-parser separately
 
