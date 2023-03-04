@@ -10,9 +10,13 @@ const morgan = require("morgan"); // morgan is a middleware that logs the reques
 // database 
 const connectDB = require("./db/connect");
 
+// routers 
+const authRouter = require('./routes/authRoutes');
+
 // middlewares 
 const notFoundMiddleware = require('./middlewares/not-found');
 const errorHandlerMiddleware = require('./middlewares/error-handler');
+
 
 app.use(morgan('tiny')) // tiny is the format of the logs that we want to see in the console i.e method, url, status code, response time etc. 
 
@@ -21,6 +25,8 @@ app.use(express.json()) // this is a middleware that parses the incoming request
 app.get('/',(req,res)=>{
     res.send('e-commerce-api');
 })
+
+app.use('/api/v1/auth',authRouter);
 
 
 app.use(notFoundMiddleware);
