@@ -13,7 +13,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     customError.msg = Object.values(err.errors)
       .map((item) => item.message)
       .join(",");
-    customError.statusCode = BAD_REQUEST;
+    customError.statusCode = StatusCodes.BAD_REQUEST;
     // 400 --> BAD_REQUEST
   }
 
@@ -23,7 +23,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     customError.msg = `Duplicate value entered for ${Object.keys(
       err.keyValue
     )} field, please choose another value`;
-    customError.statusCode = BAD_REQUEST;
+    customError.statusCode = StatusCodes.BAD_REQUEST;
     // 400 --> BAD_REQUEST
   }
 
@@ -31,7 +31,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   // cast error occurs when we pass an invalid id in the url parameter
   if (err.name === "CastError") {
     customError.msg = `No item found with id : ${err.value}`;
-    customError.statusCode = NOT_FOUND;
+    customError.statusCode = StatusCodes.NOT_FOUND;
     // 404 --> NOT_FOUND
   }
 
