@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
     name:{
@@ -29,5 +30,21 @@ const UserSchema = new mongoose.Schema({
         default: 'user', // default is used to specify the default value of the field if no value is provided
     }
 })
+
+// Mongoose pre save hook
+// we are using pre save hook to hash the password before saving the user to the database 
+
+UserSchema.pre('save', async function(){
+    const salt = await bcrypt.genSalt(10); // we are generating salt using the genSalt method provided by the bcrypt package
+    this.password = await bcrypt.hash(this.password,salt); // we are hashing the password using the hash method provided by the bcrypt package 
+    // this.password refers to the password field of the User document
+})
+
+// for comparing the password entered with the database password
+UserSchema.methods.comparePassword = async function (enteredPassword){
+    const isMatch = await bcrypt.compare(enteredPassword,this.password);
+    // this.password refers to the password saved in the database and enteredPassword refers to the password entered by the user
+    return isMatch;
+}
 
 module.exports = mongoose.model('User', UserSchema);
