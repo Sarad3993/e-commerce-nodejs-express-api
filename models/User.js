@@ -37,7 +37,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre('save', async function(){
     const salt = await bcrypt.genSalt(10); // we are generating salt using the genSalt method provided by the bcrypt package
     this.password = await bcrypt.hash(this.password,salt); // we are hashing the password using the hash method provided by the bcrypt package 
-    // this.password refers to the password field of the User document
+    // this.password(left one) refers to the password field of the User document
 })
 
 // for comparing the password entered with the database password
