@@ -26,7 +26,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     customError.statusCode = StatusCodes.BAD_REQUEST;
     // 400 --> BAD_REQUEST
   }
-
+  
   // Mongoose cast error
   // cast error occurs when we pass an invalid id in the url parameter
   if (err.name === "CastError") {
@@ -37,5 +37,6 @@ const errorHandlerMiddleware = (err, req, res, next) => {
 
   return res.status(customError.statusCode).json({ msg: customError.msg });
 };
+
 
 module.exports = errorHandlerMiddleware;
