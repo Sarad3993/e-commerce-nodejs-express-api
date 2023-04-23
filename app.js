@@ -7,6 +7,8 @@ const app = express();
 // rest of the packages 
 const morgan = require("morgan"); // morgan is a middleware that logs the requests to the console i.e it logs the method, url, status code, response time in the console for every request made to the server. It is useful because it helps us to identify we are hitting this route so bascially helps us to debug our application
 
+const cookieParser = require("cookie-parser");
+
 // database 
 const connectDB = require("./db/connect");
 
@@ -22,9 +24,17 @@ app.use(morgan('tiny')) // tiny is the format of the logs that we want to see in
 
 app.use(express.json()) // this is a middleware that parses the incoming request with JSON payloads and is based on body-parser so we don't need to install body-parser separately
 
+app.use(cookieParser());
+
+
 app.get('/',(req,res)=>{
-    res.send('e-commerce-api');
+    res.send("e-commerce-api");
 })
+
+app.get("/api/v1", (req, res) => {
+  console.log(req.cookies);
+ res.send("e-commerce-api");
+});
 
 app.use('/api/v1/auth',authRouter);
 

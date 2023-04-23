@@ -23,8 +23,9 @@ const register = async (req,res) => {
     res.cookie('token',token,{
       httpOnly: true,
       expires: new Date(Date.now() + oneDay),
-    })
-    
+    }) 
+    // name, value and options i.e name = 'token' and value = token and options = {httpOnly: true,expires: new Date(Date.now() + oneDay)}
+     
     res.status(StatusCodes.CREATED).json({user:tokenUser});
 }
 
