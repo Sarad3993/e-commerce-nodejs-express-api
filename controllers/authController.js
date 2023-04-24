@@ -47,7 +47,12 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.send("logout user");
+  res.cookie('token','logout',{
+    httpOnly: true,
+    // expires: new Date(Date.now() + 5*1000), // in 5 seconds cookie will be deleted
+    expires : new Date(Date.now()), // above method does not work for postman so we set as the current time i.e cookie gets deleted from the browser as the user logs out 
+  })
+  res.status(StatusCodes.OK).json({msg: 'User logged out!'});
 };
 
 
