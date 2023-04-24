@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { StatusCodes } = require("http-status-codes");
 
 const createJWT = ({payload}) =>{
     const token = jwt.sign(payload,process.env.JWT_SECRET,{expiresIn: process.env.JWT_LIFETIME});
@@ -21,7 +20,7 @@ const attachCookiesToResponse = ({res,user}) =>{
     signed:true,
   });
   // name, value and options i.e name = 'token' and value = token and options = {httpOnly: true,expires: new Date(Date.now() + oneDay)}
-  res.status(StatusCodes.CREATED).json({ user});
+
 }
 
 
