@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
-const {createJWT } = require('../utils')
+const { attachCookiesToResponse } = require('../utils')
 
 const register = async (req,res) => {
   const {email,name,password} = req.body; // we are destructuring the email,name and password from the request body and storing it in the variables with the same name ie email,name and password respectively 
@@ -16,17 +16,8 @@ const register = async (req,res) => {
     const user = await User.create({name,email,password,role}); // instead of passing req.body we are passing the destructured variables ie email,name and password to the create method to make sure that only the required fields are passed to the create method and no other field is passed by mistake. It is always a good practice to pass only the required fields to the create method instead of passing the entire request body 
     const tokenUser = {name:user.name,userId:user._id,role:user.role};
 
-    const token = createJWT({payload:tokenUser});
+    attachCookiesToResponse({res,user:tokenUser});
 
-    const oneDay = 1000 * 60 * 60 * 24;
-
-    res.cookie('token',token,{
-      httpOnly: true,
-      expires: new Date(Date.now() + oneDay),
-    }) 
-    // name, value and options i.e name = 'token' and value = token and options = {httpOnly: true,expires: new Date(Date.now() + oneDay)}
-     
-    res.status(StatusCodes.CREATED).json({user:tokenUser});
 }
 
 const login = async (req, res) => {

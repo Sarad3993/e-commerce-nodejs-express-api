@@ -24,7 +24,7 @@ app.use(morgan('tiny')) // tiny is the format of the logs that we want to see in
 
 app.use(express.json()) // this is a middleware that parses the incoming request with JSON payloads and is based on body-parser so we don't need to install body-parser separately
 
-app.use(cookieParser());
+app.use(cookieParser(process.env.JWT_SECRET)); // signing the token with the secret key i.e process.env.JWT_SECRET
 
 
 app.get('/',(req,res)=>{
@@ -32,7 +32,8 @@ app.get('/',(req,res)=>{
 })
 
 app.get("/api/v1", (req, res) => {
-  console.log(req.cookies);
+//   console.log(req.cookies);
+  console.log(req.signedCookies); 
  res.send("e-commerce-api");
 });
 
