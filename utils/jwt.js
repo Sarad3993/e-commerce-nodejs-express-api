@@ -7,7 +7,7 @@ const createJWT = ({payload}) =>{
 
 const isTokenValid = ({token}) => jwt.verify(token,process.env.JWT_SECRET);
 
- 
+
 const attachCookiesToResponse = ({res,user}) =>{
   const token = createJWT({ payload: user });
 
@@ -20,6 +20,7 @@ const attachCookiesToResponse = ({res,user}) =>{
     signed:true,
   });
   // name, value and options i.e name = 'token' and value = token and options = {httpOnly: true,expires: new Date(Date.now() + oneDay)}
+  // here signed: true means that token is signed and encrypted before being sent to the client 
 
 }
 
