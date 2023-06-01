@@ -14,8 +14,9 @@ router.get("/", getAllUsers);
 
 
 router.get("/showMe", showCurrentUser); 
-router.post("/updateUser", updateUser);
-router.post("/updateUserPassword", updateUserPassword);
+router.patch("/updateUser", updateUser);
+router.patch("/updateUserPassword", updateUserPassword);
+
 
 router.get("/:id", getSingleUser);
 
