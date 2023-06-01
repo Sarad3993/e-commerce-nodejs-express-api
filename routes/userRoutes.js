@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {authenticateUser} = require("../middlewares/authentication");
+const {authenticateUser, authorizePermissions } = require("../middlewares/authentication");
 const {
   getAllUsers,
   getSingleUser,
@@ -9,7 +9,7 @@ const {
 } = require("../controllers/userController");
 
 
-router.get("/", authenticateUser, getAllUsers);
+router.get("/", authenticateUser, authorizePermissions,getAllUsers);
 // alternatively, 
 // router.route("/").get(getAllUsers);
 
@@ -19,7 +19,7 @@ router.patch("/updateUser", updateUser);
 router.patch("/updateUserPassword", updateUserPassword);
 
 
-router.get("/:id", authenticateUser, getSingleUser);
+router.get("/:id", authenticateUser,authorizePermissions,getSingleUser);
 
 
 module.exports = router;
