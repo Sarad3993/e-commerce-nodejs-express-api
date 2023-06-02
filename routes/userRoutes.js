@@ -15,7 +15,7 @@ router.get("/", authenticateUser, authorizePermissions('admin'), getAllUsers);
 
  
 router.get("/showMe",authenticateUser, showCurrentUser); 
-router.patch("/updateUser", updateUser);
+router.patch("/updateUser", authenticateUser,  updateUser);
 router.patch("/updateUserPassword", authenticateUser, updateUserPassword);
 
 

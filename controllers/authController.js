@@ -42,12 +42,12 @@ const login = async (req, res) => {
   if(!isPassswordCorrect){
     throw new CustomError.UnauthenticatedError("Invalid Credentials");
   }
-  
+
  const tokenUser = createTokenUser(user);
 
  attachCookiesToResponse({ res, user: tokenUser });
 
- res.status(StatusCodes.CREATED).json({ user: tokenUser });
+ res.status(StatusCodes.OK).json({ user: tokenUser });
 };
 
 const logout = async (req, res) => {
