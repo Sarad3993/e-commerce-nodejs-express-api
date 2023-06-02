@@ -35,6 +35,13 @@ const UserSchema = new mongoose.Schema({
 // we are using pre save hook to hash the password before saving the user to the database
 
 UserSchema.pre('save', async function(){
+    // console.log(this.modifiedPaths());
+    // console.log(this.isModified('name'));
+
+    if(!this.isModified('password')){
+        return;
+    }
+
     const salt = await bcrypt.genSalt(10); // we are generating salt using the genSalt method provided by the bcrypt package
     this.password = await bcrypt.hash(this.password,salt); // we are hashing the password using the hash method provided by the bcrypt package 
     // this.password(left one) refers to the password field of the User document
