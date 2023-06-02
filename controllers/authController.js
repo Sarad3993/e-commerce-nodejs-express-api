@@ -1,7 +1,8 @@
 const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
-const { attachCookiesToResponse } = require('../utils')
+const { attachCookiesToResponse, createTokenUser } = require('../utils')
+
 
 const register = async (req,res) => {
   const {email,name,password} = req.body; // we are destructuring the email,name and password from the request body and storing it in the variables with the same name ie email,name and password respectively 
@@ -13,8 +14,10 @@ const register = async (req,res) => {
     const role = await User.countDocuments({}) === 0? 'admin':'user'; // countDocuments method returns the count of the documents in the database 
     // we are checking if the count of the documents in the database is 0 or not. If it is 0 then we are setting the role of the user to admin otherwise we are setting the role of the user to user
 
-    const user = await User.create({name,email,password,role}); // instead of passing req.body we are passing the destructured variables ie email,name and password to the create method to make sure that only the required fields are passed to the create method and no other field is passed by mistake. It is always a good practice to pass only the required fields to the create method instead of passing the entire request body 
-    const tokenUser = {name:user.name,userId:user._id,role:user.role};
+    const user = await User.create({name,email,password,role}); // instead of passing req.body we are passing the destructured variables ie email,name and password to the create method to make sure that only the required fields are passed to the create method and no other field is passed by mistake. It is always a good practice to pass only the required fields to the create method instead of passing the entire request body
+
+
+    const tokenUser = createTokenUser(user);
 
     attachCookiesToResponse({res,user:tokenUser});
 
@@ -39,7 +42,8 @@ const login = async (req, res) => {
   if(!isPassswordCorrect){
     throw new CustomError.UnauthenticatedError("Invalid Credentials");
   }
- const tokenUser = { name: user.name, userId: user._id, role: user.role };
+  
+ const tokenUser = createTokenUser(user);
 
  attachCookiesToResponse({ res, user: tokenUser });
 
