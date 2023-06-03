@@ -9,6 +9,8 @@ const morgan = require("morgan"); // morgan is a middleware that logs the reques
 
 const cookieParser = require("cookie-parser");
 
+const fileUpload = require("express-fileupload");
+
 // database 
 const connectDB = require("./db/connect");
 
@@ -28,6 +30,8 @@ app.use(express.json()) // this is a middleware that parses the incoming request
 
 app.use(cookieParser(process.env.JWT_SECRET)); // signing the token with the secret key i.e process.env.JWT_SECRET
 
+app.use(express.static('./public'));
+app.use(fileUpload());
 
 // base route 
 app.get('/',(req,res)=>{
