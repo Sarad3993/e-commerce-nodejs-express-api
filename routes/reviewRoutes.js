@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {
-  authenticateUser,
+  authenticateUser, authorizePermissions
 } = require("../middlewares/authentication");
 
 const {
@@ -18,8 +18,8 @@ router.route('/').post(authenticateUser, createReview)
 
 router.route('/:id')
 .get(getSingleReview)
-.patch(authenticateUser, updateReview)
-.delete(authenticateUser, deleteReview);
+.patch(authenticateUser,updateReview)
+.delete(authenticateUser, authorizePermissions("admin"), deleteReview);
 
 
 module.exports = router;
