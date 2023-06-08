@@ -2,6 +2,7 @@
  const {StatusCodes} = require('http-status-codes')
  const CustomError = require("../errors")
  const path = require('path')
+ const Review = require("../models/Review");
  
  const createProduct = async (req,res)=>{
     req.body.user = req.user.userId;
@@ -38,10 +39,16 @@
 
  const deleteProduct = async (req,res)=>{
      const {id:productId} = req.params;
-     const product = await Product.findOneAndDelete({_id:productId});
+     const product = await Product.findOne({_id:productId});
      if(!product){
          throw new CustomError.NotFoundError(`No product with id: ${productId}`)
      }
+
+     // Delete the associated reviews of that product first
+     await Review.deleteMany({product: productId});
+
+     // Now delete the product too using deleteOne()
+     await Product.deleteOne({_id:productId});
      res.status(StatusCodes.OK).json({msg:"Product removed successfully"});
  }
 
