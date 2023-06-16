@@ -19,34 +19,41 @@ const OrderSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    
     shippingFee: {
       type: Number,
       required: true,
     },
+
     subtotal: {
       type: Number,
       required: true,
     },
+    
     total: {
       type: Number,
       required: true,
     },
+
     cartItems: [SingleCartItemSchema],
     status: {
       type: String,
       enum: ["pending", "failed", "paid", "delivered", "cancelled"],
-      default: pending,
+      default: 'pending',
     },
+
     user: {
       type: mongoose.Schema.ObjectId,
       // Can also write as: mongoose.Types.ObjectId ..
       ref: "User",
       requried: true,
     },
+
     clientSecret: {
       type: String,
       required: true,
     },
+
     paymentIntentId: {
       type: String,
     },
